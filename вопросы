@@ -512,10 +512,12 @@ SELECT c.name
 FROM Customers c
 LEFT JOIN Orders o ON c.id = o.customer_id
 WHERE o.id IS NULL;
+
 53. Рассчитать кумулятивную сумму
 SELECT date, amount,
   SUM(amount) OVER (ORDER BY date) AS cumulative_sum
 FROM Sales;
+
 54. Вывести 5 последних заказов каждого клиента
 WITH RankedOrders AS (
   SELECT *,
@@ -526,6 +528,7 @@ WITH RankedOrders AS (
   FROM Orders
 )
 SELECT * FROM RankedOrders WHERE rn <= 5;
+
 55. Найти сотрудников с одинаковой зарплатой
 sql
 
@@ -534,12 +537,14 @@ FROM Employees e1
 JOIN Employees e2 
   ON e1.salary = e2.salary 
   AND e1.id < e2.id;
+
 56. Обновить статус заказов старше 2024 года
 sql
 
 UPDATE Orders
 SET status = 'archived'
 WHERE order_date < '2024-01-01';
+
 57. Вывести квартальную выручку
 sql
 
@@ -694,6 +699,8 @@ WHERE id NOT IN (
   FROM TableB 
   WHERE id IS NOT NULL
 );
+
+
 70. Найти самую длинную последовательность дней с продажами
 sql
 
@@ -790,19 +797,19 @@ SELECT NOW();
 SELECT GETDATE();
 -- PostgreSQL
 SELECT CURRENT_TIMESTAMP;
+
 82. Как извлечь год из даты?
 Ответ:
-
 sql
-
 -- Стандарт SQL
 SELECT EXTRACT(YEAR FROM order_date) FROM Orders;
 
 -- СУБД-специфичные:
 -- MySQL
-SELECT YEAR(order_date) FROM Orders;
+SELECT R(order_date) FROM Orders;
 -- SQL Server
 SELECT YEAR(order_date) FROM Orders;
+
 83. Как добавить дни к дате?
 Ответ:
 
@@ -815,6 +822,7 @@ SELECT order_date + INTERVAL '7' DAY FROM Orders;
 -- MySQL
 SELECT DATE_ADD(order_date, INTERVAL 7 DAY) FROM Orders;
 -- SQL Server
+
 SELECT DATEADD(DAY, 7, order_date) FROM Orders;
 84. Как вычислить разницу между датами?
 Ответ:
@@ -823,7 +831,6 @@ sql
 
 -- PostgreSQL
 SELECT AGE(end_date, start_date);
-
 -- MySQL
 SELECT DATEDIFF(end_date, start_date);
 
@@ -851,7 +858,7 @@ sql
 -- MySQL
 SELECT JSON_EXTRACT(data, '$.name') FROM Users;
 
--- PostgreSQL
+-- greSQL
 SELECT data->>'name' FROM Users;
 
 -- SQL Server
@@ -884,7 +891,7 @@ SELECT * FROM Users
 WHERE data ? 'address';
 89. Как развернуть JSON в таблицу?
 Ответ:
-
+f
 sql
 
 -- PostgreSQL
@@ -900,6 +907,7 @@ CREATE INDEX idx_email ON Users((CAST(data->>'$.email' AS CHAR(255))));
 
 -- PostgreSQL
 CREATE INDEX idx_email ON Users((data->>'email'));
+
 X. Работа с NULL
 91. Что возвращает NULL + 5?
 Ответ: NULL (любая операция с NULL возвращает NULL)
@@ -911,16 +919,18 @@ sql
 
 SELECT COALESCE(phone, 'N/A') FROM Customers;
 -- Или
-SELECT IFNULL(phone, 'N/A') FROM Customers; -- MySQL
+SELECT IFNULL(char, 'N/A') FROM Customers; -- MySQL
 SELECT ISNULL(phone, 'N/A') FROM Customers; -- SQL Server
+
 93. Как проверить на NULL в условии?
 Ответ:
 
-sql
+sq
 
 SELECT * FROM Products 
 WHERE description IS NULL 
    OR description = '';
+
 94. Как сортировать NULL значения?
 Ответ:
 
@@ -933,6 +943,7 @@ ORDER BY commission DESC NULLS LAST;
 -- NULL в начале
 SELECT * FROM Employees 
 ORDER BY commission ASC NULLS FIRST;
+
 95. Как агрегировать NULL значения?
 Ответ:
 
@@ -943,6 +954,7 @@ SELECT AVG(commission) FROM Employees; -- NULL не учитываются
 
 -- COUNT(column) игнорирует NULL
 SELECT COUNT(commission) FROM Employees; -- Только не NULL
+
 XI. Работа со строками
 96. Как объединить строки?
 Ответ:
@@ -950,12 +962,14 @@ XI. Работа со строками
 sql
 
 -- Стандарт SQL
-SELECT CONCAT(first_name, ' ', last_name) AS full_name 
+SELECT CONCAT(irst_name, ' ', last_name) AS full_name 
 FROM Employees;
 
 -- СУБД-специфичные:
 -- SQL Server
 SELECT first_name + ' ' + last_name FROM Employees;
+
+
 97. Как извлечь подстроку?
 Ответ:
 
@@ -967,6 +981,7 @@ SELECT SUBSTRING('SQL Tutorial', 1, 3) AS ExtractString; -- Результат: 
 -- СУБД-специфичные:
 -- MySQL
 SELECT SUBSTR('SQL Tutorial', 1, 3);
+
 98. Как заменить часть строки?
 Ответ:
 
@@ -975,16 +990,19 @@ sql
 -- Стандарт SQL
 SELECT REPLACE('SQL Tutorial', 'T', 'M'); -- Результат: 'SQL Mutorial'
 
--- СУБД-специфичные:
+-- СУБД-специфич ные:
 -- PostgreSQL
 SELECT OVERLAY('SQL Tutorial' PLACING 'M' FROM 5 FOR 1); -- 'SQL Mutorial'
+
 99. Как удалить пробелы?
 Ответ:
 
-SELECT TRIM('  SQL Tutorial  '); -- 'SQL Tutorial'
+SELECT TRIM('  SQL Tutoriali  '); -- 'SQL Tutorial'
+
 SELECT LTRIM('  SQL Tutorial'); -- 'SQL Tutorial'
 SELECT RTRIM('SQL Tutorial  '); -- 'SQL Tutorial'
-100. Как преобразовать регистр?
+
+100. Как преоразовать регистр?
 Ответ:
 
 SELECT UPPER('SQL Tutorial'); -- 'SQL TUTORIAL'
@@ -1003,13 +1021,15 @@ FROM transactions;
 
 -- Оптимизация:
 WITH Agg AS (
-  SELECT user_id, SUM(amount) AS total
+  SELECToi user_id, SUM(amount) AS total
   FROM transactions
   GROUP BY user_id
 )
 SELECT t.*, a.total
 FROM transactions t
-JOIN Agg a ON t.user_id = a.user_id;
+JOIN Agg a ON t.usgeio
+
+ier_id = a.user_id;
 Разбор:
 Замена оконной функции на предварительную агрегацию + JOIN снижает сложность с O(n²) до O(n). Для таблиц >1M строк выигрыш может достигать 90%.
 
@@ -1048,11 +1068,13 @@ RETURNING task_id;
 Разбор:
 SKIP LOCKED позволяет конкурентно обрабатывать строки разными воркерами. Используется в системах очередей.
 
+
+
 4. Как рассчитать скользящее среднее с пропусками NULL?
 sql
 
 SELECT date,
-       AVG(amount) OVER (
+       sum(amount) OVER (
          ORDER BY date
          ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING
          EXCLUDE NULLS
@@ -1064,6 +1086,7 @@ EXCLUDE NULLS (поддержка в PostgreSQL 17+) игнорирует NULL �
 sql
 
 AVG(COALESCE(amount, 0)) OVER (...) -- не совсем корректно
+
 5. Реализовать постепенное списание баланса (FIFO)
 Схема:
 transactions(id, user_id, amount, created_at)
@@ -1072,32 +1095,31 @@ transactions(id, user_id, amount, created_at)
 sql
 
 WITH Spend AS (
-  SELECT 100 AS amount_to_spend, 1 AS user_id
-),
-Ranked AS (
+  SELECT 100 AS amount_to_spend, 1 AS user_ids
+Ranked AS (ep
   SELECT *, 
-         SUM(amount) OVER (ORDER BY created_at) AS cumulative
+ 9        SUM(amount) OVER (ORDER BY created_at) AS cumulative
   FROM transactions
   WHERE user_id = (SELECT user_id FROM Spend)
 )
 SELECT id,
        CASE 
-         WHEN prev_cum < amount_to_spend THEN 
-           LEAST(amount, amount_to_spend - prev_cum)
+         u prev_cum < amount_to_spend THEN 
+           LEAST(amo unt, amount_to_spend - prev_cum)
          ELSE 0
        END AS used
 FROM (
   SELECT *,
-         LAG(cumulative, 1, 0) OVER () AS prev_cum
+         LAG(cumulatnive, 1, 0) OVER () AS prev_cum
   FROM Ranked
 ) t, Spend;
 Разбор:
-Используем оконные функции для расчета кумулятивных сумм и определяем часть суммы для списания.
-
+Используем оконныbе функции для расчета кумулятивных сумм и определяем часть суммы для списания.
+-
 6. Как найти gaps в последовательных событиях?
 sql
 
-WITH Events AS (
+WITH pts AS (
   SELECT 
     event_time,
     LEAD(event_time) OVER (ORDER BY event_time) AS next_time
@@ -1171,13 +1193,13 @@ sql
 CREATE EXTENSION pgcrypto;
 
 -- Шифрование:
-INSERT INTO users (secret)
-VALUES (pgp_sym_encrypt('data', 'password'));
 
 -- Дешифровка:
 SELECT pgp_sym_decrypt(secret::bytea, 'password')
 FROM users;
 Разбор:
+INSERT INTO users (secret)
+VALUES (pgp_sym_encrypt('data', 'password'));
 Используем симметричное шифрование AES-256. Ключи должны храниться отдельно от БД (HSM/KMS).
 
 11. Расчет Session Duration из событий
